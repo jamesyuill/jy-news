@@ -1,7 +1,8 @@
-const selectEndPoints = require('../models/api.models');
+const fs = require('fs/promises');
 
 function getEndPoints(req, res, next) {
-  selectEndPoints()
+  return fs
+    .readFile(`${__dirname}/../endpoints.json`, 'utf-8')
     .then((data) => {
       const parsed = JSON.parse(data);
       res.status(200).send({ 'api endpoints': parsed });
