@@ -78,7 +78,6 @@ describe('CORE: GET /api/articles/:article_id', () => {
       .get('/api/articles/1')
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(typeof body.article).toBe('object');
       });
   });
@@ -95,6 +94,22 @@ describe('CORE: GET /api/articles/:article_id', () => {
         expect(body.article).toHaveProperty('created_at');
         expect(body.article).toHaveProperty('votes');
         expect(body.article).toHaveProperty('article_img_url');
+      });
+  });
+  test('404: Error returned if article_id is correct type but doesn_t exist', () => {
+    return request(app)
+      .get('/api/articles/999')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: Error returned if article_id is invalid type', () => {
+    return request(app)
+      .get('/api/articles/cheese')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
       });
   });
 });

@@ -15,4 +15,10 @@ app.all('*', (req, res) => {
   res.status(404).send({ msg: 'Not found' });
 });
 
+app.use((err, req, res, next) => {
+  if (err.status) {
+    res.status(404).send({ msg: err.msg });
+  }
+});
+
 module.exports = app;
