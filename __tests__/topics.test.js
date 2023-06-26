@@ -51,3 +51,14 @@ describe('CORE: GET /api/topics', () => {
       });
   });
 });
+
+describe('200: /api', () => {
+  test('should return an object', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe('object');
+      });
+  });
+});
