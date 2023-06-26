@@ -1,10 +1,11 @@
 const selectAllTopics = require('../models/topics.models');
 
 function getAllTopics(req, res, next) {
-  selectAllTopics().then((allTopics) => {
-    console.log(allTopics);
-    res.status(200).send({ allTopics });
-  });
+  selectAllTopics()
+    .then((allTopics) => {
+      res.status(200).send({ allTopics });
+    })
+    .catch(next);
 }
 
 module.exports = getAllTopics;

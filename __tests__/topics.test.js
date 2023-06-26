@@ -29,4 +29,24 @@ describe('CORE: GET /api/topics', () => {
         expect(body.allTopics).toHaveLength(3);
       });
   });
+  test('Returned topic objects should have the properties slug and description', () => {
+    return request(app)
+      .get('/api/topics')
+      .expect(200)
+      .then(({ body }) => {
+        const allTopics = body.allTopics;
+        allTopics.forEach((topic) => {
+          expect(topic).toHaveProperty('slug', expect.any(String));
+          expect(topic).toHaveProperty('description', expect.any(String));
+        });
+      });
+  });
+  test('404: Error sent if endpoint does not exist', () => {
+    return request(app)
+      .get('/')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
 });
