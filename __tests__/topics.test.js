@@ -71,3 +71,30 @@ describe('CORE: GET /api', () => {
       });
   });
 });
+
+describe('CORE: GET /api/articles/:article_id', () => {
+  test('200: Should return an article object', () => {
+    return request(app)
+      .get('/api/articles/1')
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body);
+        expect(typeof body.article).toBe('object');
+      });
+  });
+  test('200: Returning object should have the appropriate keys', () => {
+    return request(app)
+      .get('/api/articles/1')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article).toHaveProperty('author');
+        expect(body.article).toHaveProperty('title');
+        expect(body.article).toHaveProperty('article_id');
+        expect(body.article).toHaveProperty('body');
+        expect(body.article).toHaveProperty('topic');
+        expect(body.article).toHaveProperty('created_at');
+        expect(body.article).toHaveProperty('votes');
+        expect(body.article).toHaveProperty('article_img_url');
+      });
+  });
+});
