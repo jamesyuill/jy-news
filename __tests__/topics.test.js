@@ -53,8 +53,8 @@ describe('CORE: GET /api/topics', () => {
   });
 });
 
-describe('200: /api', () => {
-  test('should return an object', () => {
+describe('CORE: GET /api', () => {
+  test('200: should return an object', () => {
     return request(app)
       .get('/api')
       .expect(200)
@@ -62,7 +62,7 @@ describe('200: /api', () => {
         expect(typeof body).toBe('object');
       });
   });
-  test('should return an object', () => {
+  test('200: should return an up-to-date version of the endpoints.json file', () => {
     return request(app)
       .get('/api')
       .expect(200)
