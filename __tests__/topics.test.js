@@ -3,6 +3,7 @@ const testData = require('../db/data/test-data/index.js');
 const db = require('../db/connection.js');
 const seed = require('../db/seeds/seed.js');
 const request = require('supertest');
+const endpoints = require('../serverFiles/endpoints.json');
 
 beforeEach(() => {
   return seed(testData);
@@ -59,6 +60,14 @@ describe('200: /api', () => {
       .expect(200)
       .then(({ body }) => {
         expect(typeof body).toBe('object');
+      });
+  });
+  test('should return an object', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body['api endpoints']).toEqual(endpoints);
       });
   });
 });
