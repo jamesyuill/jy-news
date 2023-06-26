@@ -13,15 +13,16 @@ afterAll(() => {
 });
 
 describe('CORE: GET /api/topics', () => {
-  test('Should return an array of topic objects', () => {
+  test('200: Should return an array of topic objects', () => {
     return request(app)
       .get('/api/topics')
       .expect(200)
       .then(({ body }) => {
         expect(Array.isArray(body.allTopics)).toBe(true);
+        expect(typeof body.allTopics[0]).toBe('object');
       });
   });
-  test('Should return ALL topics in the array', () => {
+  test('200: Should return ALL topics in the array', () => {
     return request(app)
       .get('/api/topics')
       .expect(200)
@@ -29,7 +30,7 @@ describe('CORE: GET /api/topics', () => {
         expect(body.allTopics).toHaveLength(3);
       });
   });
-  test('Returned topic objects should have the properties slug and description', () => {
+  test('200: Returned topic objects should have the properties slug and description', () => {
     return request(app)
       .get('/api/topics')
       .expect(200)
@@ -43,7 +44,7 @@ describe('CORE: GET /api/topics', () => {
   });
   test('404: Error sent if endpoint does not exist', () => {
     return request(app)
-      .get('/')
+      .get('/cheese')
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe('Not found');
