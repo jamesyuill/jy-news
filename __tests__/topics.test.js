@@ -236,3 +236,94 @@ describe('CORE: /api/articles/:article_id/comments', () => {
       });
   });
 });
+
+describe('CORE: POST /api/articles/:article_id/comments', () => {
+  test('201: should return an object with the created comment data', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { newComment } = body;
+        expect(typeof newComment).toBe('object');
+      });
+  });
+  test('201: should return the newly created comment object with correct properties', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    const exampleObject = {
+      author: expect.any(String),
+      body: expect.any(String),
+      votes: expect.any(Number),
+      article_id: expect.any(Number),
+      created_at: expect.any(String),
+      comment_id: expect.any(Number),
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { newComment } = body;
+        expect(newComment).toMatchObject(exampleObject);
+      });
+  });
+  test('400: responds with error if input object doesn_t have correct properties', () => {
+    const dummyComment = {
+      author: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+  test('404: responds with error if user doesn_t exist', () => {
+    const dummyComment = {
+      username: 'james',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('404: responds with error if article_id doesn_t exist', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/999/comments')
+      .send(dummyComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: responds with error if article_id is invalid type', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/egg/comments')
+      .send(dummyComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});

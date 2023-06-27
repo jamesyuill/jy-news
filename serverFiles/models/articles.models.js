@@ -64,4 +64,5 @@ module.exports = {
   selectArticlesById,
   selectAllArticles,
   selectCommentsByArticleId,
+  checkArticleExists,
 };
