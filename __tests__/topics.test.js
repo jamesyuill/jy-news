@@ -4,6 +4,7 @@ const db = require('../db/connection.js');
 const seed = require('../db/seeds/seed.js');
 const request = require('supertest');
 const endpoints = require('../serverFiles/endpoints.json');
+const jestsorted = require('jest-sorted');
 
 beforeEach(() => {
   return seed(testData);
@@ -115,6 +116,58 @@ describe('CORE: GET /api/articles/:article_id', () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe('Bad request');
+      });
+  });
+});
+
+describe('CORE: GET /api/articles', () => {
+  test('200: should return an array of objects', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(Array.isArray(articles)).toBe(true);
+        expect(typeof articles[0]).toBe('object');
+      });
+  });
+  test('200: should return an array with the length 5', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles).toHaveLength(5);
+      });
+  });
+  test('200: the returned objects should have the correct properties', () => {
+    const exampleObject = {
+      comment_count: '2',
+      author: 'icellusedkars',
+      title: 'Eight pug gifs that remind me of mitch',
+      article_id: expect.any(Number),
+      topic: 'mitch',
+      created_at: '2020-11-03T09:12:00.000Z',
+      votes: 0,
+      article_img_url:
+        'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+    };
+
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles[0]).toMatchObject(exampleObject);
+      });
+  });
+  test('200: returning array of articles should be sorted by date in descending order', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles).toBeSortedBy('created_at', { descending: true });
       });
   });
 });
