@@ -172,7 +172,7 @@ describe('CORE: GET /api/articles', () => {
   });
 });
 
-describe.only('CORE: /api/articles/:article_id/comments', () => {
+describe('CORE: /api/articles/:article_id/comments', () => {
   test('200: should return an array of objects', () => {
     return request(app)
       .get('/api/articles/1/comments')
@@ -217,6 +217,22 @@ describe.only('CORE: /api/articles/:article_id/comments', () => {
       .then(({ body }) => {
         const comments = body.comments;
         expect(comments).toBeSortedBy('created_at', { descending: true });
+      });
+  });
+  test('404: responds with error if article_id is correct type but non existent', () => {
+    return request(app)
+      .get('/api/articles/999/comments')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: responds with error if article_id is invalid type', () => {
+    return request(app)
+      .get('/api/articles/egg/comments')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
       });
   });
 });
