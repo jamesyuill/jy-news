@@ -192,7 +192,7 @@ describe('CORE: /api/articles/:article_id/comments', () => {
         expect(comments).toHaveLength(11);
       });
   });
-  test('200: the returned comment object should have the correct preoperties', () => {
+  test('200: the returned comment object should have the correct properties', () => {
     const exampleObject = {
       comment_id: expect.any(Number),
       body: 'I hate streaming noses',
