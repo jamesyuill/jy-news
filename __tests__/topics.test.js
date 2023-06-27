@@ -328,7 +328,7 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
   });
 });
 
-describe.only('CORE: PATCH /api/articles/:article_id', () => {
+describe('CORE: PATCH /api/articles/:article_id', () => {
   test('201: should respond with object', () => {
     const newVote = 10;
     const patchInput = { inc_votes: newVote };
