@@ -289,7 +289,7 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
   });
   test('404: responds with error if user doesn_t exist', () => {
     const dummyComment = {
-      author: 'james',
+      username: 'james',
       body: 'great article, if only it were 1000 pages shorter',
     };
     return request(app)
@@ -298,6 +298,32 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe('Not found');
+      });
+  });
+  test('404: responds with error if article_id doesn_t exist', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/999/comments')
+      .send(dummyComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: responds with error if article_id is invalid type', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/egg/comments')
+      .send(dummyComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
       });
   });
 });

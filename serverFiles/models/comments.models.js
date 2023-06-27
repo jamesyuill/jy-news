@@ -1,6 +1,12 @@
 const db = require('../../db/connection');
 
 function addCommentByArticleId(article_id, commentData) {
+  const regexPattern = /\d/g;
+  const isNumber = regexPattern.test(article_id);
+  if (!isNumber) {
+    return Promise.reject({ status: 400, msg: 'Bad request' });
+  }
+
   const userCommentArray = [commentData.body, article_id, commentData.username];
 
   return db
