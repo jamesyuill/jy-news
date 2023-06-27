@@ -82,18 +82,23 @@ describe('CORE: GET /api/articles/:article_id', () => {
       });
   });
   test('200: Returning object should have the appropriate keys', () => {
+    const exampleObject = {
+      article_id: 1,
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: '2020-07-09T20:11:00.000Z',
+      votes: 100,
+      article_img_url:
+        'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+    };
+
     return request(app)
       .get('/api/articles/1')
       .expect(200)
       .then(({ body }) => {
-        expect(body.article).toHaveProperty('author');
-        expect(body.article).toHaveProperty('title');
-        expect(body.article).toHaveProperty('article_id');
-        expect(body.article).toHaveProperty('body');
-        expect(body.article).toHaveProperty('topic');
-        expect(body.article).toHaveProperty('created_at');
-        expect(body.article).toHaveProperty('votes');
-        expect(body.article).toHaveProperty('article_img_url');
+        expect(body.article).toMatchObject(exampleObject);
       });
   });
   test('404: Error returned if article_id is correct type but doesn_t exist', () => {
