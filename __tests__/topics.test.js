@@ -71,3 +71,50 @@ describe('CORE: GET /api', () => {
       });
   });
 });
+
+describe('CORE: GET /api/articles/:article_id', () => {
+  test('200: Should return an article object', () => {
+    return request(app)
+      .get('/api/articles/1')
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body.article).toBe('object');
+      });
+  });
+  test('200: Returning object should have the appropriate keys', () => {
+    const exampleObject = {
+      article_id: 1,
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: '2020-07-09T20:11:00.000Z',
+      votes: 100,
+      article_img_url:
+        'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+    };
+
+    return request(app)
+      .get('/api/articles/1')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article).toMatchObject(exampleObject);
+      });
+  });
+  test('404: Error returned if article_id is correct type but doesn_t exist', () => {
+    return request(app)
+      .get('/api/articles/999')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: Error returned if article_id is invalid type', () => {
+    return request(app)
+      .get('/api/articles/cheese')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
