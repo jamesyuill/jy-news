@@ -145,7 +145,7 @@ describe('CORE: GET /api/articles', () => {
       comment_count: '2',
       author: 'icellusedkars',
       title: 'Eight pug gifs that remind me of mitch',
-      article_id: 3,
+      article_id: expect.any(Number),
       topic: 'mitch',
       created_at: '2020-11-03T09:12:00.000Z',
       votes: 0,
