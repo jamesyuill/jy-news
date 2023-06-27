@@ -4,6 +4,7 @@ const db = require('../db/connection.js');
 const seed = require('../db/seeds/seed.js');
 const request = require('supertest');
 const endpoints = require('../serverFiles/endpoints.json');
+const jestsorted = require('jest-sorted');
 
 beforeEach(() => {
   return seed(testData);
@@ -130,7 +131,7 @@ describe('CORE: GET /api/articles', () => {
         expect(typeof articles[0]).toBe('object');
       });
   });
-  test('200: should return an array with the length 13', () => {
+  test('200: should return an array with the length 5', () => {
     return request(app)
       .get('/api/articles')
       .expect(200)
@@ -158,6 +159,15 @@ describe('CORE: GET /api/articles', () => {
       .then(({ body }) => {
         const articles = body.articles;
         expect(articles[0]).toMatchObject(exampleObject);
+      });
+  });
+  test('200: returning array of articles should be sorted by date in descending order', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles).toBeSortedBy('created_at', { descending: true });
       });
   });
 });
