@@ -11,4 +11,4 @@
 
 SELECT * FROM comments WHERE article_id = 1;
 
-INSERT INTO comments (body, article_id, author ) VALUES ('cheese',1, 'butter_bridge')  RETURNING *;
+INSERT INTO comments (body, article_id, author ) VALUES ('cheese',1, 'james')  RETURNING *;

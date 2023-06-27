@@ -29,6 +29,14 @@ app.all('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err.code) {
+    res.status(404).send({ msg: 'Not found' });
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
   if (err.status === 404) {
     res.status(404).send({ msg: err.msg });
   } else if (err.status === 400) {

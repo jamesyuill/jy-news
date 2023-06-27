@@ -237,7 +237,7 @@ describe('CORE: /api/articles/:article_id/comments', () => {
   });
 });
 
-describe.only('CORE: POST /api/articles/:article_id/comments', () => {
+describe('CORE: POST /api/articles/:article_id/comments', () => {
   test('201: should return an object with the created comment data', () => {
     const dummyComment = {
       username: 'butter_bridge',
@@ -271,8 +271,33 @@ describe.only('CORE: POST /api/articles/:article_id/comments', () => {
       .expect(201)
       .then(({ body }) => {
         const { newComment } = body;
-
         expect(newComment).toMatchObject(exampleObject);
+      });
+  });
+  test('404: responds with error if input object doesn_t have correct properties', () => {
+    const dummyComment = {
+      author: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('404: responds with error if user doesn_t exist', () => {
+    const dummyComment = {
+      author: 'james',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
       });
   });
 });

@@ -1,5 +1,4 @@
 const db = require('../../db/connection');
-const format = require('pg-format');
 
 function addCommentByArticleId(article_id, commentData) {
   const userCommentArray = [commentData.body, article_id, commentData.username];

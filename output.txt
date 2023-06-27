@@ -14,9 +14,3 @@ You are now connected to database "nc_news_test" as user "jamesyuill".
          18 | This morning, I showered for nine minutes.                                                                                                                                           |          1 | butter_bridge |    16 | 2020-07-21 01:20:00
 (11 rows)
 
- comment_id |  body  | article_id |    author     | votes |         created_at         
-------------+--------+------------+---------------+-------+----------------------------
-         20 | cheese |          1 | butter_bridge |     0 | 2023-06-27 14:53:20.542615
-(1 row)
-
-INSERT 0 1
