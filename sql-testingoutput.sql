@@ -4,4 +4,11 @@
 -- GROUP BY articles.article_id
 -- ORDER BY articles.created_at DESC;
 
-SELECT * FROM comments WHERE article_id = 1 ORDER BY created_at DESC;
+-- SELECT * FROM comments WHERE article_id = 1 ORDER BY created_at DESC;
+
+
+-- INSERT INTO comments (body, author) VALUES ('cheese', 'james') WHERE article_id = 1 RETURNING *;
+
+SELECT * FROM comments WHERE article_id = 1;
+
+INSERT INTO comments (body, article_id, author ) VALUES ('cheese',1, 'butter_bridge')  RETURNING *;

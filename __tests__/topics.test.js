@@ -236,3 +236,43 @@ describe('CORE: /api/articles/:article_id/comments', () => {
       });
   });
 });
+
+describe.only('CORE: POST /api/articles/:article_id/comments', () => {
+  test('201: should return an object with the created comment data', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { newComment } = body;
+        expect(typeof newComment).toBe('object');
+      });
+  });
+  test('201: should return the newly created comment object with correct properties', () => {
+    const dummyComment = {
+      username: 'butter_bridge',
+      body: 'great article, if only it were 1000 pages shorter',
+    };
+    const exampleObject = {
+      author: expect.any(String),
+      body: expect.any(String),
+      votes: expect.any(Number),
+      article_id: expect.any(Number),
+      created_at: expect.any(String),
+      comment_id: expect.any(Number),
+    };
+    return request(app)
+      .post('/api/articles/1/comments')
+      .send(dummyComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { newComment } = body;
+
+        expect(newComment).toMatchObject(exampleObject);
+      });
+  });
+});
