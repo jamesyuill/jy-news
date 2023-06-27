@@ -171,3 +171,68 @@ describe('CORE: GET /api/articles', () => {
       });
   });
 });
+
+describe('CORE: /api/articles/:article_id/comments', () => {
+  test('200: should return an array of objects', () => {
+    return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({ body }) => {
+        const comments = body.comments;
+        expect(Array.isArray(comments)).toBe(true);
+        expect(typeof comments[0]).toBe('object');
+      });
+  });
+  test('200: returned array should have length of 11', () => {
+    return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({ body }) => {
+        const comments = body.comments;
+        expect(comments).toHaveLength(11);
+      });
+  });
+  test('200: the returned comment object should have the correct properties', () => {
+    const exampleObject = {
+      comment_id: expect.any(Number),
+      body: 'I hate streaming noses',
+      article_id: 1,
+      author: 'icellusedkars',
+      votes: expect.any(Number),
+      created_at: '2020-11-03T21:00:00.000Z',
+    };
+
+    return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({ body }) => {
+        const comments = body.comments;
+        expect(comments[0]).toMatchObject(exampleObject);
+      });
+  });
+  test('200: returning array of comments should be sorted by most recent first', () => {
+    return request(app)
+      .get('/api/articles/1/comments')
+      .expect(200)
+      .then(({ body }) => {
+        const comments = body.comments;
+        expect(comments).toBeSortedBy('created_at', { descending: true });
+      });
+  });
+  test('404: responds with error if article_id is correct type but non existent', () => {
+    return request(app)
+      .get('/api/articles/999/comments')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: responds with error if article_id is invalid type', () => {
+    return request(app)
+      .get('/api/articles/egg/comments')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
