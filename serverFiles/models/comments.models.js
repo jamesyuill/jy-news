@@ -7,6 +7,10 @@ function addCommentByArticleId(article_id, commentData) {
     return Promise.reject({ status: 400, msg: 'Bad request' });
   }
 
+  if (!commentData.body || !commentData.username) {
+    return Promise.reject({ status: 400, msg: 'Bad request' });
+  }
+
   const userCommentArray = [commentData.body, article_id, commentData.username];
 
   return db

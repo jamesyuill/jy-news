@@ -274,7 +274,7 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
         expect(newComment).toMatchObject(exampleObject);
       });
   });
-  test('404: responds with error if input object doesn_t have correct properties', () => {
+  test('400: responds with error if input object doesn_t have correct properties', () => {
     const dummyComment = {
       author: 'butter_bridge',
       body: 'great article, if only it were 1000 pages shorter',
@@ -282,9 +282,9 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
     return request(app)
       .post('/api/articles/1/comments')
       .send(dummyComment)
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe('Not found');
+        expect(body.msg).toBe('Bad request');
       });
   });
   test('404: responds with error if user doesn_t exist', () => {

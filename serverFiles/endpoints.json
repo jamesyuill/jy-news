@@ -56,6 +56,10 @@
   },
   "POST /api/articles/:article_id/comments": {
     "description": "This will add a comment for the selected article",
+    "examplePost": {
+      "username": "username",
+      "body": "comment text"
+    },
     "exampleResponse": {
       "comment_id": 19,
       "body": "great article, if only it were 1000 pages shorter",
