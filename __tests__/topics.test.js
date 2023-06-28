@@ -388,4 +388,15 @@ describe('CORE: PATCH /api/articles/:article_id', () => {
         expect(body.msg).toBe('Bad request');
       });
   });
+  test('400: responds with error when passed an object with no body', () => {
+    const patchInput = {  };
+
+    return request(app)
+      .patch('/api/articles/egg')
+      .send(patchInput)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
 });
