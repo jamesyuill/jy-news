@@ -44,9 +44,29 @@ function selectCommentsByArticleId(article_id) {
     )
     .then(({ rows }) => {
       if (!rows.length) {
-        return checkArticleExists();
+        return checkArticleExists(article_id);
       }
       return rows;
+    });
+}
+
+function changeVotesByArticleId(article_id, newVoteData) {
+  const regexPattern = /\d/g;
+  const isNumber = regexPattern.test(article_id);
+  if (!isNumber) {
+    return Promise.reject({ status: 400, msg: 'Bad request' });
+  }
+
+  return db
+    .query(
+      `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`,
+      [newVoteData, article_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return checkArticleExists(article_id);
+      }
+      return rows[0];
     });
 }
 
@@ -65,4 +85,5 @@ module.exports = {
   selectAllArticles,
   selectCommentsByArticleId,
   checkArticleExists,
+  changeVotesByArticleId,
 };
