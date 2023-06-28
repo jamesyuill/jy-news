@@ -327,3 +327,91 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
       });
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+describe.only('CORE: DELETE /api/comments/:comment_id', () => {
+  test('204: reponds with no content', () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then(( {body} ) => {
+        expect(body).toEqual({});
+      });
+  });
+  test('404: responds with error when given a comment_id that is valid but non-existent', () => {
+    return request(app)
+      .delete('/api/comments/999')
+      .expect(404)
+      .then(( {body} ) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+});

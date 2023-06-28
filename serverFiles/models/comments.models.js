@@ -25,4 +25,23 @@ function addCommentByArticleId(article_id, commentData) {
     });
 }
 
-module.exports = addCommentByArticleId;
+function removeCommentById(comment_id){
+  return db.query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *`, [comment_id]).then(({rows})=>{
+    if(!rows.length){
+      return checkCommentExists(comment_id)
+    }
+    return rows;
+  })
+}
+
+function checkCommentExists(comment_id){
+  return db.query(`SELECT * FROM comments WHERE comment_id = $1;`, [comment_id]).then(({rows})=>{
+    if(!rows.length) {
+      return Promise.reject({status:404, msg: 'Not found'})
+    }
+  })
+}
+
+
+
+module.exports = { addCommentByArticleId, removeCommentById};
