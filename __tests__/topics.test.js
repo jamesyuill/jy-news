@@ -431,7 +431,7 @@ describe('CORE: DELETE /api/comments/:comment_id', () => {
   )
 })
 
-describe.only('CORE: GET /api/users', ()=>{
+describe('CORE: GET /api/users', ()=>{
   test('200: should return an array of objects',()=>{
     return request(app)
     .get('/api/users')
