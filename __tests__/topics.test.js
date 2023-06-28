@@ -397,7 +397,7 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
 
 
 
-describe.only('CORE: DELETE /api/comments/:comment_id', () => {
+describe('CORE: DELETE /api/comments/:comment_id', () => {
   test('204: reponds with no content', () => {
     return request(app)
       .delete('/api/comments/1')
