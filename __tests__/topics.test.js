@@ -328,6 +328,103 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
   });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 describe('CORE: PATCH /api/articles/:article_id', () => {
   test('201: should respond with object', () => {
     const newVote = 10;
@@ -400,3 +497,32 @@ describe('CORE: PATCH /api/articles/:article_id', () => {
       });
   });
 });
+
+describe('CORE: DELETE /api/comments/:comment_id', () => {
+  test('204: reponds with no content', () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then(( {body} ) => {
+        expect(body).toEqual({});
+      });
+  });
+  test('404: responds with error when given a comment_id that is valid but non-existent', () => {
+    return request(app)
+      .delete('/api/comments/999')
+      .expect(404)
+      .then(( {body} ) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+
+  test('400: responds with error when given a comment_id that is invalid type', () => {
+    return request(app)
+      .delete('/api/comments/simonlebon')
+      .expect(400)
+      .then(( {body} ) => {
+        expect(body.msg).toBe('Bad request')
+      }
+      )}
+  )
+})

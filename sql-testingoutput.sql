@@ -14,10 +14,8 @@
 -- INSERT INTO comments (body, article_id, author ) VALUES ('cheese',1, 'james')  RETURNING *;
 
 
-SELECT votes FROM articles;
+-- SELECT votes FROM articles;
 
--- SELECT votes + 10 AS updated_votes FROM articles WHERE article_id = 9;
+SELECT votes + 1 FROM articles WHERE article_id = 1;
 
-UPDATE articles SET votes = votes + 10 WHERE article_id = 9;
-
-SELECT * FROM articles WHERE article_id = 9;
+-- UPDATE articles SET votes + 1 WHERE article_id = 1 RETURNING *;
