@@ -8,7 +8,10 @@ const {
   updateVotesByArticleId,
 } = require('./controllers/articles.controllers');
 const { postCommentByArticleId, deleteCommentById} = require('../serverFiles/controllers/comments.controllers');
+const getAllUsers = require('./controllers/users.controllers.js')
 const { handlePsqlErrors, handleCustomErrors } = require('./errorhandlers');
+
+
 
 const app = express();
 
@@ -23,6 +26,9 @@ app.get('/api/articles', getAllArticles);
 app.get('/api/articles/:article_id', getArticlesById);
 
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
+
+app.get('/api/users', getAllUsers)
+
 
 app.post('/api/articles/:article_id/comments', postCommentByArticleId);
 

@@ -329,102 +329,6 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 describe('CORE: PATCH /api/articles/:article_id', () => {
   test('201: should respond with object', () => {
     const newVote = 10;
@@ -525,4 +429,26 @@ describe('CORE: DELETE /api/comments/:comment_id', () => {
       }
       )}
   )
+})
+
+describe.only('CORE: GET /api/users', ()=>{
+  test('200: should return an array of objects',()=>{
+    return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then(({body})=>{
+      const { users } = body;
+      expect(Array.isArray(users)).toBe(true)
+      expect(typeof users[0]).toBe('object')
+    })
+  })
+  test('200: should return an array with the length four',()=>{
+    return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then(({body})=>{
+      const { users } = body
+      expect(users).toHaveLength(4)
+    })
+  })
 })
