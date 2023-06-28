@@ -469,5 +469,14 @@ describe('FEATURE: GET /api/articles (queries)', ()=>{
       expect(articles).toHaveLength(1)
     })
   })
+  test('200: when passed a sort_by query should return array sorted by that query value in descending order',()=>{
+    return request(app)
+    .get('/api/articles?sort_by=author')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles).toBeSortedBy('author', {descending: true})
+    })
+  })
   
 })

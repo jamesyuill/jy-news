@@ -18,9 +18,13 @@ function selectArticlesById(article_id) {
     });
 }
 
-function selectAllArticles(filterBy) {
-  const validFilterBy = ['mitch', 'cats', 'paper']
+function selectAllArticles(filterBy, sortBy) {
+  const validSortBy = ['comment_count', 'author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'article_img_url']
+    if(!validSortBy.includes(sortBy)) {
+      return Promise.reject({status:400,msg:'Bad request'})
+    }
 
+  const validFilterBy = ['mitch', 'cats', 'paper']
     if (filterBy) {
       if (!validFilterBy.includes(filterBy)) {
         return Promise.reject({status:400,msg:'Bad request'})
@@ -38,8 +42,11 @@ function selectAllArticles(filterBy) {
     queryString += `WHERE topic = $1 `
   }
   
-  queryString += `GROUP BY articles.article_id ORDER BY articles.created_at DESC;`
-  console.log(queryString)
+  
+
+  queryString += `GROUP BY articles.article_id ORDER BY articles.${sortBy} DESC;`
+
+
   return db
     .query(queryString, queryValues)
     .then(({ rows }) => {
