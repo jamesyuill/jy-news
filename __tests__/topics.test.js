@@ -172,7 +172,7 @@ describe('CORE: GET /api/articles', () => {
   });
 });
 
-describe('CORE: /api/articles/:article_id/comments', () => {
+describe('CORE: GET /api/articles/:article_id/comments', () => {
   test('200: should return an array of objects', () => {
     return request(app)
       .get('/api/articles/1/comments')
@@ -420,6 +420,84 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
 
 
 
+
+
+
+
+
+describe('CORE: PATCH /api/articles/:article_id', () => {
+  test('201: should respond with object', () => {
+    const newVote = 10;
+    const patchInput = { inc_votes: newVote };
+    return request(app)
+      .patch('/api/articles/9')
+      .send(patchInput)
+      .expect(201)
+      .then(({ body }) => {
+        expect(typeof body.updatedArticle).toBe('object');
+      });
+  });
+  test('201: when passed a value of 10 should increment votes by ten', () => {
+    const newVote = 10;
+    const patchInput = { inc_votes: newVote };
+
+    return request(app)
+      .patch('/api/articles/9')
+      .send(patchInput)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.updatedArticle.votes).toEqual(10);
+      });
+  });
+  test('201: when passed a value of -10 should decrement votes by ten', () => {
+    const newVote = -10;
+    const patchInput = { inc_votes: newVote };
+
+    return request(app)
+      .patch('/api/articles/9')
+      .send(patchInput)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.updatedArticle.votes).toEqual(-10);
+      });
+  });
+  test('404: responds with error when passed an article_id that is valid type but non-existent', () => {
+    const newVote = 10;
+    const patchInput = { inc_votes: newVote };
+
+    return request(app)
+      .patch('/api/articles/999')
+      .send(patchInput)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: responds with error when passed an article_id that is an invalid type', () => {
+    const newVote = 10;
+    const patchInput = { inc_votes: newVote };
+
+    return request(app)
+      .patch('/api/articles/egg')
+      .send(patchInput)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+  test('400: responds with error when passed an object with no body', () => {
+    const patchInput = {  };
+
+    return request(app)
+      .patch('/api/articles/egg')
+      .send(patchInput)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
+
 describe('CORE: DELETE /api/comments/:comment_id', () => {
   test('204: reponds with no content', () => {
     return request(app)
@@ -443,7 +521,8 @@ describe('CORE: DELETE /api/comments/:comment_id', () => {
       .delete('/api/comments/simonlebon')
       .expect(400)
       .then(( {body} ) => {
-        expect(body.msg).toBe('Bad request');
-      });
-  });
-});
+        expect(body.msg).toBe('Bad request')
+      }
+      )}
+  )
+})

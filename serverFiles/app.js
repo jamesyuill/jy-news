@@ -5,6 +5,7 @@ const {
   getArticlesById,
   getAllArticles,
   getCommentsByArticleId,
+  updateVotesByArticleId,
 } = require('./controllers/articles.controllers');
 const { postCommentByArticleId, deleteCommentById} = require('../serverFiles/controllers/comments.controllers');
 const { handlePsqlErrors, handleCustomErrors } = require('./errorhandlers');
@@ -25,6 +26,7 @@ app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 
 app.post('/api/articles/:article_id/comments', postCommentByArticleId);
 
+app.patch('/api/articles/:article_id', updateVotesByArticleId )
 
 app.delete('/api/comments/:comment_id', deleteCommentById)
 

@@ -16,10 +16,6 @@
 
 -- SELECT votes FROM articles;
 
--- SELECT votes + 1 FROM articles WHERE article_id = 1;
+SELECT votes + 1 FROM articles WHERE article_id = 1;
 
 -- UPDATE articles SET votes + 1 WHERE article_id = 1 RETURNING *;
-
-SELECT * FROM comments;
-
-DELETE FROM comments WHERE comment_id = 1 RETURNING *;

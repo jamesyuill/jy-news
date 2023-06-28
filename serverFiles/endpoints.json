@@ -72,5 +72,19 @@
   "DELETE /api/comments/:comment_id": {
     "description": "This will delete the specified comment and serve back no content. Comment_id has to be an integer",
     "exampleResponse": {}
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "This will update the votes count for the specified article. The incrementor/decremetor should be stored in a variable called 'newVote'. A positive integer with increase the votes and conversly a negative integer will decreace the votes. The updated article will be served. In the below example newVote contains the value 10",
+    "examplePatch": {
+      "inc_votes": "newVote"
+    },
+    "exampleResponse": {
+      "comment_id": 19,
+      "body": "great article, if only it were 1000 pages shorter",
+      "article_id": 1,
+      "author": "butter_bridge",
+      "votes": 10,
+      "created_at": "2023-06-27T14:37:54.041Z"
+    }
   }
 }
