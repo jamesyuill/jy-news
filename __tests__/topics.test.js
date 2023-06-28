@@ -414,4 +414,13 @@ describe.only('CORE: DELETE /api/comments/:comment_id', () => {
         expect(body.msg).toBe('Not found');
       });
   });
+
+  test('400: responds with error when given a comment_id that is invalid type', () => {
+    return request(app)
+      .delete('/api/comments/simonlebon')
+      .expect(400)
+      .then(( {body} ) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
 });
