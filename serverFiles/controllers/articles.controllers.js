@@ -15,7 +15,10 @@ function getArticlesById(req, res, next) {
 }
 
 function getAllArticles(req, res, next) {
-  selectAllArticles()
+  const filterBy = req.query.filter_by
+
+
+  selectAllArticles(filterBy)
     .then((allArticles) => {
       res.status(200).send({ articles: allArticles });
     })

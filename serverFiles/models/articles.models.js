@@ -18,13 +18,30 @@ function selectArticlesById(article_id) {
     });
 }
 
-function selectAllArticles() {
+function selectAllArticles(filterBy) {
+  const validFilterBy = ['mitch', 'cats', 'paper']
+
+    if (filterBy) {
+      if (!validFilterBy.includes(filterBy)) {
+        return Promise.reject({status:400,msg:'Bad request'})
+      }
+    }
+
+
+
+  const queryValues = []
+
+  let queryString = `SELECT COUNT(comments.body) AS comment_count, articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url  FROM articles JOIN comments ON articles.article_id = comments.article_id `
+  
+  if (filterBy) {
+    queryValues.push(filterBy)
+    queryString += `WHERE topic = $1 `
+  }
+  
+  queryString += `GROUP BY articles.article_id ORDER BY articles.created_at DESC;`
+  console.log(queryString)
   return db
-    .query(
-      `SELECT COUNT(comments.body) AS comment_count, articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url  FROM articles JOIN comments ON articles.article_id = comments.article_id
-  GROUP BY articles.article_id
-  ORDER BY articles.created_at DESC;`
-    )
+    .query(queryString, queryValues)
     .then(({ rows }) => {
       return rows;
     });

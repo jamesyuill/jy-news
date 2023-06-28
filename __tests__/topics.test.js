@@ -457,3 +457,17 @@ describe('CORE: GET /api/users', () => {
       });
   });
 });
+
+describe('FEATURE: GET /api/articles (queries)', ()=>{
+  test('200: should respond with correct topic array and correct length when given a topic query',()=>{
+    return request(app)
+    .get('/api/articles?filter_by=cats')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(Array.isArray(articles)).toBe(true)
+      expect(articles).toHaveLength(1)
+    })
+  })
+  
+})
