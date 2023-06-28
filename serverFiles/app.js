@@ -7,11 +7,12 @@ const {
   getCommentsByArticleId,
   updateVotesByArticleId,
 } = require('./controllers/articles.controllers');
-const { postCommentByArticleId, deleteCommentById} = require('../serverFiles/controllers/comments.controllers');
-const getAllUsers = require('./controllers/users.controllers.js')
+const {
+  postCommentByArticleId,
+  deleteCommentById,
+} = require('../serverFiles/controllers/comments.controllers');
+const getAllUsers = require('./controllers/users.controllers.js');
 const { handlePsqlErrors, handleCustomErrors } = require('./errorhandlers');
-
-
 
 const app = express();
 
@@ -27,14 +28,13 @@ app.get('/api/articles/:article_id', getArticlesById);
 
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 
-app.get('/api/users', getAllUsers)
-
+app.get('/api/users', getAllUsers);
 
 app.post('/api/articles/:article_id/comments', postCommentByArticleId);
 
-app.patch('/api/articles/:article_id', updateVotesByArticleId )
+app.patch('/api/articles/:article_id', updateVotesByArticleId);
 
-app.delete('/api/comments/:comment_id', deleteCommentById)
+app.delete('/api/comments/:comment_id', deleteCommentById);
 
 app.all('*', (req, res) => {
   res.status(404).send({ msg: 'Not found' });

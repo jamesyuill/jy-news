@@ -328,7 +328,6 @@ describe('CORE: POST /api/articles/:article_id/comments', () => {
   });
 });
 
-
 describe('CORE: PATCH /api/articles/:article_id', () => {
   test('201: should respond with object', () => {
     const newVote = 10;
@@ -390,7 +389,7 @@ describe('CORE: PATCH /api/articles/:article_id', () => {
       });
   });
   test('400: responds with error when passed an object with no body', () => {
-    const patchInput = {  };
+    const patchInput = {};
 
     return request(app)
       .patch('/api/articles/egg')
@@ -407,7 +406,7 @@ describe('CORE: DELETE /api/comments/:comment_id', () => {
     return request(app)
       .delete('/api/comments/1')
       .expect(204)
-      .then(( {body} ) => {
+      .then(({ body }) => {
         expect(body).toEqual({});
       });
   });
@@ -415,7 +414,7 @@ describe('CORE: DELETE /api/comments/:comment_id', () => {
     return request(app)
       .delete('/api/comments/999')
       .expect(404)
-      .then(( {body} ) => {
+      .then(({ body }) => {
         expect(body.msg).toBe('Not found');
       });
   });
@@ -424,40 +423,37 @@ describe('CORE: DELETE /api/comments/:comment_id', () => {
     return request(app)
       .delete('/api/comments/simonlebon')
       .expect(400)
-      .then(( {body} ) => {
-        expect(body.msg).toBe('Bad request')
-      }
-      )}
-  )
-})
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
 
-describe('CORE: GET /api/users', ()=>{
-  test('200: should return an array of objects',()=>{
+describe('CORE: GET /api/users', () => {
+  test('200: should return an array of objects', () => {
     return request(app)
-    .get('/api/users')
-    .expect(200)
-    .then(({body})=>{
-      const { users } = body;
-      expect(Array.isArray(users)).toBe(true)
-      expect(typeof users[0]).toBe('object')
-    })
-  })
-  
-  test('200: returning array should contain the correct amount of objects and these objects all contain the correct properties',()=>{
+      .get('/api/users')
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(Array.isArray(users)).toBe(true);
+        expect(typeof users[0]).toBe('object');
+      });
+  });
+
+  test('200: returning array should contain the correct amount of objects and these objects all contain the correct properties', () => {
     return request(app)
-    .get('/api/users')
-    .expect(200)
-    .then(({body})=>{
-      const { users } = body
-      expect(users).toHaveLength(4);
+      .get('/api/users')
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toHaveLength(4);
 
-      users.forEach(user => {
-        expect(user).toHaveProperty('username', expect.any(String))
-        expect(user).toHaveProperty('name', expect.any(String))
-        expect(user).toHaveProperty('avatar_url', expect.any(String))
-      } )
-
-
-    })
-  })
-})
+        users.forEach((user) => {
+          expect(user).toHaveProperty('username', expect.any(String));
+          expect(user).toHaveProperty('name', expect.any(String));
+          expect(user).toHaveProperty('avatar_url', expect.any(String));
+        });
+      });
+  });
+});
