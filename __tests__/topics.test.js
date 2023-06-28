@@ -442,22 +442,15 @@ describe('CORE: GET /api/users', ()=>{
       expect(typeof users[0]).toBe('object')
     })
   })
-  test('200: should return an array with the length four',()=>{
+  
+  test('200: returning array should contain the correct amount of objects and these objects all contain the correct properties',()=>{
     return request(app)
     .get('/api/users')
     .expect(200)
     .then(({body})=>{
       const { users } = body
-      expect(users).toHaveLength(4)
-    })
-  })
-  test('200: each returning object should have correct properties',()=>{
-    return request(app)
-    .get('/api/users')
-    .expect(200)
-    .then(({body})=>{
-      const { users } = body
-      
+      expect(users).toHaveLength(4);
+
       users.forEach(user => {
         expect(user).toHaveProperty('username', expect.any(String))
         expect(user).toHaveProperty('name', expect.any(String))
