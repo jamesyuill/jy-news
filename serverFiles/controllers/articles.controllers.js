@@ -17,9 +17,9 @@ function getArticlesById(req, res, next) {
 function getAllArticles(req, res, next) {
   const filterBy = req.query.filter_by
   const sortBy = req.query.sort_by || 'created_at'
+  const orderBy = req.query.order || 'desc'
 
-
-  selectAllArticles(filterBy, sortBy)
+  selectAllArticles(filterBy, sortBy, orderBy)
     .then((allArticles) => {
       res.status(200).send({ articles: allArticles });
     })

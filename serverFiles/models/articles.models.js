@@ -18,7 +18,7 @@ function selectArticlesById(article_id) {
     });
 }
 
-function selectAllArticles(filterBy, sortBy) {
+function selectAllArticles(filterBy, sortBy, orderBy) {
   const validSortBy = ['comment_count', 'author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'article_img_url']
     if(!validSortBy.includes(sortBy)) {
       return Promise.reject({status:400,msg:'Bad request'})
@@ -31,7 +31,12 @@ function selectAllArticles(filterBy, sortBy) {
       }
     }
 
-
+    const validOrderBy = ['asc', 'desc'];
+    if (orderBy) {
+      if (!validOrderBy.includes(orderBy)) {
+        return Promise.reject({status:400, msg:'Bad request'})
+      }
+    }
 
   const queryValues = []
 
@@ -44,12 +49,12 @@ function selectAllArticles(filterBy, sortBy) {
   
   
 
-  queryString += `GROUP BY articles.article_id ORDER BY articles.${sortBy} DESC;`
-
+  queryString += `GROUP BY articles.article_id ORDER BY articles.${sortBy} ${orderBy};`
 
   return db
     .query(queryString, queryValues)
     .then(({ rows }) => {
+      
       return rows;
     });
 }
