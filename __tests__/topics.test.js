@@ -458,7 +458,7 @@ describe('CORE: GET /api/users', () => {
   });
 });
 
-describe.only('FEATURE: GET /api/articles (queries)', ()=>{
+describe('FEATURE: GET /api/articles (queries)', ()=>{
   test('200: should respond with correct topic array and correct length when given a topic query',()=>{
     return request(app)
     .get('/api/articles?filter_by=cats')
@@ -504,6 +504,24 @@ describe.only('FEATURE: GET /api/articles (queries)', ()=>{
       const { articles } = body
       expect(articles).toHaveLength(4)
       expect(articles).toBeSortedBy('title', {descending: false})
+    })
+  })
+  test('400: responds with error if passed value for filter not on greenlist',()=>{
+    return request(app)
+    .get('/api/articles?filter_by=droptable')
+    .expect(400)
+    .then(({body})=>{
+      
+      expect(body.msg).toBe('Bad request')
+    })
+  })
+  test('400: responds with error if passed value for sort_by not on greenlist',()=>{
+    return request(app)
+    .get('/api/articles?sort_by=droptable')
+    .expect(400)
+    .then(({body})=>{
+      
+      expect(body.msg).toBe('Bad request')
     })
   })
   
