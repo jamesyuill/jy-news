@@ -1,4 +1,6 @@
 const express = require('express');
+const apiRouter = require('../serverFiles/routes/api-router.js')
+
 const getAllTopics = require('./controllers/topics.controllers');
 const getEndPoints = require('./controllers/api.controllers');
 const {
@@ -17,6 +19,8 @@ const { handlePsqlErrors, handleCustomErrors } = require('./errorhandlers');
 const app = express();
 
 app.use(express.json());
+
+// app.use('/api', apiRouter);
 
 app.get('/api', getEndPoints);
 
