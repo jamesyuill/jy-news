@@ -4,7 +4,7 @@ Hi there,
 
 Welcome to the very first API I have ever created.
 
-You can access all the endpoint fun [here](https://jy-news.onrender.com/api/).
+You can access all the endpoint fun [here](https://jy-news.onrender.com/api).
 
 This news API is a project completed during my time on the Northcoders Software Development course. It was a practical exercise to cement our knowledge of setting up a server, first locally, then remotely. It was a chance to impliment asynchronous code and to get familiar with SQL queries, as well as mitigating for SQL injection using Postgres' dollar syntax and the principles of greenlisting for user input.
 
