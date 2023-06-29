@@ -29,8 +29,12 @@
   }
 },
   "GET /api/articles": {
-    "description": "serves an array of all topics",
-    "queries": [],
+    "description": "serves an array of all topics. If a filter_by is attched will return an array filtered by that value passed. If no sort_by or order set will default to sort_by 'created_at' and order 'descending'",
+    "queries": [{
+      "filter_by": "topic",
+      "sort_by": ["author", "title","topic","created_at", "votes", "article_img_url"],
+      "order":["asc", "desc"]
+    }],
     "exampleResponse": {
       "articles": [
         {

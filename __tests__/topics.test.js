@@ -457,3 +457,81 @@ describe('CORE: GET /api/users', () => {
       });
   });
 });
+
+describe('FEATURE: GET /api/articles (queries)', ()=>{
+  test('200: should respond with correct topic array and correct length when given a topic query',()=>{
+    return request(app)
+    .get('/api/articles?filter_by=cats')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(Array.isArray(articles)).toBe(true)
+      expect(articles).toHaveLength(1)
+    })
+  })
+  test('200: when passed a sort_by query should return array sorted by that query value in descending order',()=>{
+    return request(app)
+    .get('/api/articles?sort_by=author')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles).toBeSortedBy('author', {descending: true})
+    })
+  })
+  test('200: when not passed a sort_by query should default to sorting by date in descending order',()=>{
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles).toBeSortedBy('created_at', {descending: true})
+    })
+  })
+  test('200: returns with array sorted in ascending order when passed the query of "asc"',()=>{
+    return request(app)
+    .get('/api/articles?order=asc')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles).toBeSortedBy('created_at', {descending: false})
+    })
+  })
+  test('200: if passed a filter, sort by and ascending query returns an array filtered and sorted by that query in ascending order',()=>{
+    return request(app)
+    .get('/api/articles?filter_by=mitch&sort_by=title&order=asc')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles).toHaveLength(4)
+      expect(articles).toBeSortedBy('title', {descending: false})
+    })
+  })
+  test('404: responds with error if passed value for filter that does not exist',()=>{
+    return request(app)
+    .get('/api/articles?filter_by=droptable')
+    .expect(404)
+    .then(({body})=>{
+      
+      expect(body.msg).toBe('Not found')
+    })
+  })
+  test('400: responds with error if passed value for sort_by not on greenlist',()=>{
+    return request(app)
+    .get('/api/articles?sort_by=droptable')
+    .expect(400)
+    .then(({body})=>{
+      
+      expect(body.msg).toBe('Bad request')
+    })
+  })
+  test('400: responds with error if passed value for order not on greenlist',()=>{
+    return request(app)
+    .get('/api/articles?order=droptable')
+    .expect(400)
+    .then(({body})=>{
+      
+      expect(body.msg).toBe('Bad request')
+    })
+  })
+  
+})
