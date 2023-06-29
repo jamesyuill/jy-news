@@ -506,18 +506,27 @@ describe('FEATURE: GET /api/articles (queries)', ()=>{
       expect(articles).toBeSortedBy('title', {descending: false})
     })
   })
-  test('400: responds with error if passed value for filter not on greenlist',()=>{
+  test('404: responds with error if passed value for filter that does not exist',()=>{
     return request(app)
     .get('/api/articles?filter_by=droptable')
+    .expect(404)
+    .then(({body})=>{
+      
+      expect(body.msg).toBe('Not found')
+    })
+  })
+  test('400: responds with error if passed value for sort_by not on greenlist',()=>{
+    return request(app)
+    .get('/api/articles?sort_by=droptable')
     .expect(400)
     .then(({body})=>{
       
       expect(body.msg).toBe('Bad request')
     })
   })
-  test('400: responds with error if passed value for sort_by not on greenlist',()=>{
+  test('400: responds with error if passed value for order not on greenlist',()=>{
     return request(app)
-    .get('/api/articles?sort_by=droptable')
+    .get('/api/articles?order=droptable')
     .expect(400)
     .then(({body})=>{
       
