@@ -1,11 +1,13 @@
-# Northcoders News API
+# JY News API
 
 Hi there,
 
-In order to clone and run this project locally, you will need to create two envirmoent variable files (.env.).
+Welcome to the very first API I have ever created.
+
+You can access all the endpoint fun [here](https://jy-news.onrender.com/api/).
+
+
 
 The first will be ".env.test". This will contain "PGDATABASE=nc_news_test"
 
 The second will be ".env.development". This will contain "PGDATABASE=nc_news"
-
-These are stored in the top level of the folders
