@@ -20,25 +20,25 @@ const app = express();
 
 app.use(express.json());
 
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
-app.get('/api', getEndPoints);
+// app.get('/api', getEndPoints);
 
-app.get('/api/topics', getAllTopics);
+// app.get('/api/topics', getAllTopics);
 
-app.get('/api/articles', getAllArticles);
+// app.get('/api/articles', getAllArticles);
 
-app.get('/api/articles/:article_id', getArticlesById);
+// app.get('/api/articles/:article_id', getArticlesById);
 
-app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
+// app.get('/api/articles/:article_id/comments', getCommentsByArticleId);
 
-app.get('/api/users', getAllUsers);
+// app.get('/api/users', getAllUsers);
 
-app.post('/api/articles/:article_id/comments', postCommentByArticleId);
+// app.post('/api/articles/:article_id/comments', postCommentByArticleId);
 
-app.patch('/api/articles/:article_id', updateVotesByArticleId);
+// app.patch('/api/articles/:article_id', updateVotesByArticleId);
 
-app.delete('/api/comments/:comment_id', deleteCommentById);
+// app.delete('/api/comments/:comment_id', deleteCommentById);
 
 app.all('*', (req, res) => {
   res.status(404).send({ msg: 'Not found' });
