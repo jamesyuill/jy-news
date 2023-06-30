@@ -43,7 +43,7 @@
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all topics. If a filter_by is attched will return an array filtered by that value passed. If no sort_by or order set will default to sort_by 'created_at' and order 'descending'",
+    "description": "serves an array of all topics. If a filter_by is attached will return an array filtered by that value passed. If no sort_by or order set will default to sort_by 'created_at' and order 'descending'",
     "queries": [
       {
         "filter_by": "topic",
@@ -58,7 +58,9 @@
         "order": [
           "asc",
           "desc"
-        ]
+        ],
+        "limit_by": 5,
+        "offset":1
       }
     ],
     "exampleResponse": {
@@ -70,7 +72,8 @@
           "body": "Text from the article..",
           "created_at": "2018-05-30T15:59:13.341Z",
           "votes": 0,
-          "comment_count": 6
+          "comment_count": 6,
+          "total_count":4
         }
       ]
     }
