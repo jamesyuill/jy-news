@@ -44,19 +44,25 @@ function removeCommentById(comment_id) {
     });
 }
 
+function checkCommentExists(comment_id) {
+  return db
+    .query(`SELECT * FROM comments WHERE comment_id = $1;`, [comment_id])
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: 'Not found' });
+      }
+    });
+}
 
-
-function changeVotesByCommentId(comment_id, voteInc){
+function changeVotesByCommentId(comment_id, voteInc) {
   if (!parseInt(comment_id)) {
-    return Promise.reject({status:400,msg:'Bad request'})
+    return Promise.reject({ status: 400, msg: 'Bad request' });
   }
-  
-  
+
   if (!voteInc) {
-    return Promise.reject({status:400, msg:'Bad request'})
+    return Promise.reject({ status: 400, msg: 'Bad request' });
   }
-  
-  
+
   return db
     .query(
       `UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *;`,
@@ -68,17 +74,10 @@ function changeVotesByCommentId(comment_id, voteInc){
       }
       return rows[0];
     });
-
 }
 
-function checkCommentExists(comment_id) {
-  return db
-    .query(`SELECT * FROM comments WHERE comment_id = $1;`, [comment_id])
-    .then(({ rows }) => {
-      if (!rows.length) {
-        return Promise.reject({ status: 404, msg: 'Not found' });
-      }
-    });
-}
-
-module.exports = { changeVotesByCommentId, addCommentByArticleId, removeCommentById };
+module.exports = {
+  changeVotesByCommentId,
+  addCommentByArticleId,
+  removeCommentById,
+};

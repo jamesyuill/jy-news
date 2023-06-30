@@ -28,10 +28,11 @@
 -- WHERE articles.article_id = $1
 -- GROUP BY articles.article_id;
 
+
+-- INSERT INTO articles
+-- (title, topic, author, body, article_img_url)
+-- VALUES
+-- ('sargeat', 'mitch', 'lurker', 'barry', 'http://') RETURNING *;
+
 SELECT * FROM articles;
-
-INSERT INTO articles
-(title, topic, author, body, article_img_url)
-VALUES
-('sargeat', 'mitch', 'lurker', 'barry', 'http://') RETURNING *;
-
+SELECT * FROM articles LIMIT 2 OFFSET 1;
