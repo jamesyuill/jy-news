@@ -58,7 +58,6 @@ function selectAllArticles(filterBy, sortBy, orderBy, limitBy, offset) {
 
 
   return db.query(queryString, queryValues).then(({ rows }) => {
-    console.log(rows)
     if (!rows.length) {
       return checkTopicExists(filterBy);
     }
