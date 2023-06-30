@@ -43,13 +43,9 @@ function selectAllArticles(filterBy, sortBy, orderBy, limitBy, offset) {
     return Promise.reject({ status: 400, msg: 'Bad request' });
   }
 
-  // if (parseInt(limitBy)=== NaN) {
-  //   return Promise.reject({ status: 400, msg: 'Bad request' });
-  // }
-
   const queryValues = [limitBy];
 
-  let queryString = `SELECT COUNT(comments.body) AS comment_count, articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url  FROM articles JOIN comments ON articles.article_id = comments.article_id `;
+  let queryString = `SELECT COUNT(comments.body) AS comment_count, articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, count(*) OVER() AS total_count FROM articles JOIN comments ON articles.article_id = comments.article_id `;
 
   if (filterBy) {
     queryValues.push(filterBy);

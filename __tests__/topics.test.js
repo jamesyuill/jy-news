@@ -731,7 +731,7 @@ describe('ADVANCED: POST /api/articles', ()=>{
 })
 
 
-describe.only('ADVANCED: GET /api/articles (pagination)',()=>{
+describe('ADVANCED: GET /api/articles (pagination)',()=>{
   test('200: if passed the query of limit will limit the amount of articles in array to specified limit',()=>{
     return request(app)
     .get('/api/articles?limit_by=2')
@@ -748,6 +748,15 @@ describe.only('ADVANCED: GET /api/articles (pagination)',()=>{
     .then(({body})=>{
       const { articles } = body
       expect(articles).toHaveLength(4);
+    })
+  })
+  test('200: if passed a total_count query returns the total count',()=>{
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles[0].hasOwnProperty('total_count')).toBe(true);
     })
   })
   test('400: responds with an error if passed an invalid type for limit by query',()=>{
