@@ -34,5 +34,5 @@
 -- VALUES
 -- ('sargeat', 'mitch', 'lurker', 'barry', 'http://') RETURNING *;
 
-
--- SELECT * FROM articles LIMIT tomato;
+SELECT * FROM articles;
+SELECT * FROM articles LIMIT 2 OFFSET 1;
