@@ -656,3 +656,76 @@ describe('ADVANCED: PATCH /api/comments/:comment_id', ()=>{
       });
   });
 })
+
+describe('ADVANCED: POST /api/articles', ()=>{
+  test('201: should return the newly added article as an object with the correct properties', ()=>{
+   const inputArticle = {
+    author: 'lurker',
+    title:  'The life and times of Sir Devon Potato',
+    body: "once upon a time the end",
+    topic: "mitch",
+    article_img_url:"http://"
+   }
+   const exampleObject = {
+    author: 'lurker',
+    title:  'The life and times of Sir Devon Potato',
+    body: "once upon a time the end",
+    topic: "mitch",
+    article_img_url:"http://",
+    article_id: expect.any(Number),
+    votes:expect.any(Number),
+    created_at: expect.any(String),
+    comment_count: expect.any(Number)
+   }
+    return request(app)
+    .post('/api/articles')
+    .send(inputArticle)
+    .expect(201)
+    .then(({body})=>{
+      const { newArticle } = body;
+      expect(newArticle).toMatchObject(exampleObject)
+      
+    })
+  })
+  test('201: when passed an object with missing article_img_url will add a default', ()=>{
+    const inputArticle = {
+     author: 'lurker',
+     title:  'The life and times of Sir Devon Potato',
+     body: "once upon a time the end",
+     topic: "mitch"
+    }
+    const exampleObject = {
+     author: 'lurker',
+     title:  'The life and times of Sir Devon Potato',
+     body: "once upon a time the end",
+     topic: "mitch",
+     article_img_url:expect.any(String),
+     article_id: expect.any(Number),
+     votes:expect.any(Number),
+     created_at: expect.any(String),
+     comment_count: expect.any(Number)
+    }
+     return request(app)
+     .post('/api/articles')
+     .send(inputArticle)
+     .expect(201)
+     .then(({body})=>{
+       const { newArticle } = body;
+       expect(newArticle).toMatchObject(exampleObject)
+       
+     })
+   })
+  test('400: should return error if properties are not in the object body', ()=>{
+    const inputArticle = {
+     author: 'lurker',
+     title:  'The life and times of Sir Devon Potato',
+    }
+     return request(app)
+     .post('/api/articles')
+     .send(inputArticle)
+     .expect(400)
+     .then(({body})=>{
+       expect(body.msg).toBe('Bad request')
+     })
+   })
+})
