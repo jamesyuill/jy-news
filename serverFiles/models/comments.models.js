@@ -47,6 +47,16 @@ function removeCommentById(comment_id) {
 
 
 function changeVotesByCommentId(comment_id, voteInc){
+  if (!parseInt(comment_id)) {
+    return Promise.reject({status:400,msg:'Bad request'})
+  }
+  
+  
+  if (!voteInc) {
+    return Promise.reject({status:400, msg:'Bad request'})
+  }
+  
+  
   return db
     .query(
       `UPDATE comments SET votes = votes + $1 WHERE comment_id = $2 RETURNING *;`,
