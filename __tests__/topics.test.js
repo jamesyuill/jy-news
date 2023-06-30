@@ -552,3 +552,37 @@ describe('FEATURE: GET /api/articles/:article_id (comment_count', ()=>{
     })
   })
 })
+
+describe.only('ADVANCED: GET /api/users/:username', ()=>{
+  test('200: responds with a user object', ()=>{
+    return request(app)
+    .get('/api/users/lurker')
+    .expect(200)
+    .then(({body})=>{
+      const { user } = body
+      expect(typeof user).toBe('object')
+    })
+  })
+  test('200: responds with a user object with the correct properties', ()=>{
+    const exampleObject = {
+      username: 'lurker',
+      name: 'do_nothing',
+      avatar_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png'
+    }
+    return request(app)
+    .get('/api/users/lurker')
+    .expect(200)
+    .then(({body})=>{
+      const { user } = body
+      expect(user).toMatchObject(exampleObject)
+    })
+  })
+  test('404: responds with error if username is invalid type', ()=>{
+    return request(app)
+    .get('/api/users/9')
+    .expect(404)
+    .then(({body})=>{
+      expect(body.msg).toBe('Not found');
+    })
+  })
+})
