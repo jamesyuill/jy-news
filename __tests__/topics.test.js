@@ -553,7 +553,7 @@ describe('FEATURE: GET /api/articles/:article_id (comment_count', ()=>{
   })
 })
 
-describe.only('ADVANCED: GET /api/users/:username', ()=>{
+describe('ADVANCED: GET /api/users/:username', ()=>{
   test('200: responds with a user object', ()=>{
     return request(app)
     .get('/api/users/lurker')
@@ -577,9 +577,9 @@ describe.only('ADVANCED: GET /api/users/:username', ()=>{
       expect(user).toMatchObject(exampleObject)
     })
   })
-  test('404: responds with error if username is invalid type', ()=>{
+  test('404: responds with error if username is valid type but doesn_t exist', ()=>{
     return request(app)
-    .get('/api/users/9')
+    .get('/api/users/henrycavill')
     .expect(404)
     .then(({body})=>{
       expect(body.msg).toBe('Not found');
