@@ -28,6 +28,19 @@
     ]
   }
 },
+"GET /api/users/:username": {
+  "description": "serves a user object when specified",
+  "queries": {"username": "newwave_guy_example"},
+  "exampleResponse": {
+    "topics": [
+      {
+        "username": "newwave_guy_example",
+        "name": "simon le bon",
+        "avatar_url":"https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      }
+    ]
+  }
+},
   "GET /api/articles": {
     "description": "serves an array of all topics. If a filter_by is attched will return an array filtered by that value passed. If no sort_by or order set will default to sort_by 'created_at' and order 'descending'",
     "queries": [{
