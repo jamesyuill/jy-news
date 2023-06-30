@@ -729,3 +729,24 @@ describe('ADVANCED: POST /api/articles', ()=>{
      })
    })
 })
+
+
+describe('ADVANCED: GET /api/articles (pagination)',()=>{
+  test('200: if passed the query of limit will limit the amount of articles in array to specified limit',()=>{
+    return request(app)
+    .get('/api/articles?limit_by=2')
+    .expect(200)
+    .then(({body})=>{
+      const { articles } = body
+      expect(articles).toHaveLength(2);
+    })
+  })
+  test('400: responds with an error if passed an invalid type for limit by query',()=>{
+    return request(app)
+    .get('/api/articles?limit_by=tomato')
+    .expect(400)
+    .then(({body})=>{
+      expect(body.msg).toBe('Bad request');
+    })
+  })
+})

@@ -19,8 +19,9 @@ function getAllArticles(req, res, next) {
   const filterBy = req.query.filter_by
   const sortBy = req.query.sort_by || 'created_at'
   const orderBy = req.query.order || 'desc'
+  const limitBy = req.query.limit_by || 10
 
-  selectAllArticles(filterBy, sortBy, orderBy)
+  selectAllArticles(filterBy, sortBy, orderBy, limitBy)
     .then((allArticles) => {
       res.status(200).send({ articles: allArticles });
     })
