@@ -1,4 +1,8 @@
-const { addCommentByArticleId, removeCommentById } = require('../models/comments.models');
+const {
+  changeVotesByCommentId,
+  addCommentByArticleId,
+  removeCommentById,
+} = require('../models/comments.models');
 
 function postCommentByArticleId(req, res, next) {
   const { article_id } = req.params;
@@ -11,17 +15,29 @@ function postCommentByArticleId(req, res, next) {
     .catch(next);
 }
 
-function deleteCommentById(req,res,next){
-  const { comment_id } = req.params
+function deleteCommentById(req, res, next) {
+  const { comment_id } = req.params;
 
-  removeCommentById(comment_id).then((deletedComment)=>{
-      res.status(204).send({  })
-
-
-
-  }).catch(next)
+  removeCommentById(comment_id)
+    .then((deletedComment) => {
+      res.status(204).send({});
+    })
+    .catch(next);
 }
 
+function updateVotesByCommentId(req, res, next) {
+  const { comment_id } = req.params;
+  const voteInc = req.body.inc_votes;
 
+  changeVotesByCommentId(comment_id, voteInc)
+    .then(( updatedComment ) => {
+      res.status(201).send({ updatedComment });
+    })
+    .catch(next);
+}
 
-module.exports = { postCommentByArticleId, deleteCommentById } ;
+module.exports = {
+  updateVotesByCommentId,
+  postCommentByArticleId,
+  deleteCommentById,
+};

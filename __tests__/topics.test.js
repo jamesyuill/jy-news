@@ -586,3 +586,73 @@ describe('ADVANCED: GET /api/users/:username', ()=>{
     })
   })
 })
+
+
+describe('ADVANCED: PATCH /api/comments/:comment_id', ()=>{
+  test('201: should respond with updated comment object with votes increased by 1', ()=>{
+    const newVote = 1
+    const inputVotes = {
+      inc_votes: newVote
+    }
+    return request(app)
+    .patch('/api/comments/1')
+    .send(inputVotes)
+    .expect(201)
+    .then(({body})=>{
+      const { updatedComment } = body
+      expect(updatedComment.votes).toBe(17)
+    })
+  })
+  test('201: should respond with updated comment object with votes decreased by 1', ()=>{
+    const newVote = -1
+    const inputVotes = {
+      inc_votes: newVote
+    }
+    return request(app)
+    .patch('/api/comments/1')
+    .send(inputVotes)
+    .expect(201)
+    .then(({body})=>{
+      const { updatedComment } = body
+      expect(updatedComment.votes).toBe(15)
+    })
+  })
+  test('404: responds with error when given a comment_id that is valid but non-existent', () => {
+    const newVote = 1
+    const inputVotes = {
+      inc_votes: newVote
+    }
+    return request(app)
+      .patch('/api/comments/999')
+      .send(inputVotes)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+
+  test('400: responds with error when given a comment_id that is invalid type', () => {
+    const newVote = 1
+    const inputVotes = {
+      inc_votes: newVote
+    }
+    return request(app)
+      .patch('/api/comments/simonlebon')
+      .send(inputVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+  test('400: responds with error when given an empty object', () => {
+    const inputVotes = {}
+
+    return request(app)
+      .patch('/api/comments/1')
+      .send(inputVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+})
