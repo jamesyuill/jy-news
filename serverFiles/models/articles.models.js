@@ -102,6 +102,42 @@ function changeVotesByArticleId(article_id, newVoteData) {
     });
 }
 
+function createArticle(newArticleInput){
+  if (!newArticleInput.article_img_url) {
+    newArticleInput.article_img_url = "http://www.thisisadefaulturl.com"
+  }
+
+  const articleContents = [
+    newArticleInput.title,
+    newArticleInput.topic,
+    newArticleInput.author,
+    newArticleInput.body,
+    newArticleInput.article_img_url,
+  ]
+
+
+   if (articleContents.includes(undefined)){
+    return Promise.reject({status:400,msg:'Bad request'})
+   }
+  
+
+
+
+  return db.query(`INSERT INTO articles
+  (title, topic, author, body, article_img_url)
+  VALUES
+  ($1, $2, $3, $4, $5) RETURNING *;`, articleContents).then(({rows})=>{
+    rows[0].comment_count = 0
+    return rows[0];
+  })
+
+}
+
+
+
+
+
+
 function checkArticleExists(article_id) {
   return db
     .query(`SELECT * FROM articles WHERE article_id = $1`, [article_id])
@@ -127,5 +163,5 @@ module.exports = {
   selectAllArticles,
   selectCommentsByArticleId,
   checkArticleExists,
-  changeVotesByArticleId,
+  changeVotesByArticleId, createArticle
 };

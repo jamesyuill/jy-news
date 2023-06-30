@@ -21,9 +21,17 @@
 -- UPDATE articles SET votes + 1 WHERE article_id = 1 RETURNING *;
 
 
-SELECT COUNT(comments.body) AS comment_count, articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url
-FROM articles
-JOIN comments
-ON articles.article_id = comments.article_id
-WHERE articles.article_id = $1
-GROUP BY articles.article_id;
+-- SELECT COUNT(comments.body) AS comment_count, articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url
+-- FROM articles
+-- JOIN comments
+-- ON articles.article_id = comments.article_id
+-- WHERE articles.article_id = $1
+-- GROUP BY articles.article_id;
+
+SELECT * FROM articles;
+
+INSERT INTO articles
+(title, topic, author, body, article_img_url)
+VALUES
+('sargeat', 'mitch', 'lurker', 'barry', 'http://') RETURNING *;
+

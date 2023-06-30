@@ -3,6 +3,7 @@ const {
   selectAllArticles,
   selectCommentsByArticleId,
   changeVotesByArticleId,
+  createArticle
 } = require('../models/articles.models');
 
 function getArticlesById(req, res, next) {
@@ -46,9 +47,21 @@ function updateVotesByArticleId(req, res, next) {
     .catch(next);
 }
 
+function postArticle(req,res,next){
+  const newArticleInput = req.body
+
+  
+
+
+
+  createArticle(newArticleInput).then((newArticle)=>{
+    res.status(201).send({newArticle})
+  }).catch(next)
+}
+
 module.exports = {
   getArticlesById,
   getAllArticles,
   getCommentsByArticleId,
-  updateVotesByArticleId,
+  updateVotesByArticleId, postArticle
 };
