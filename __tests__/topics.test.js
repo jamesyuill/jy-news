@@ -87,16 +87,19 @@ describe('CORE: GET /api/articles/:article_id', () => {
       .get('/api/articles/1')
       .expect(200)
       .then(({ body }) => {
-        expect(body.article).toHaveProperty('author', expect.any(String))
-        expect(body.article).toHaveProperty('title', expect.any(String))
-        expect(body.article).toHaveProperty('article_id', expect.any(Number))
-        expect(body.article).toHaveProperty('body', expect.any(String))
-        expect(body.article).toHaveProperty('topic', expect.any(String))
-        expect(body.article).toHaveProperty('created_at', expect.any(String))
-        expect(body.article).toHaveProperty('votes', expect.any(Number))
-        expect(body.article).toHaveProperty('article_img_url', expect.any(String))
+        expect(body.article).toHaveProperty('author', expect.any(String));
+        expect(body.article).toHaveProperty('title', expect.any(String));
+        expect(body.article).toHaveProperty('article_id', expect.any(Number));
+        expect(body.article).toHaveProperty('body', expect.any(String));
+        expect(body.article).toHaveProperty('topic', expect.any(String));
+        expect(body.article).toHaveProperty('created_at', expect.any(String));
+        expect(body.article).toHaveProperty('votes', expect.any(Number));
+        expect(body.article).toHaveProperty(
+          'article_img_url',
+          expect.any(String)
+        );
       });
-      });
+  });
 
   test('404: Error returned if article_id is correct type but doesn_t exist', () => {
     return request(app)
@@ -454,174 +457,180 @@ describe('CORE: GET /api/users', () => {
   });
 });
 
-describe('FEATURE: GET /api/articles (queries)', ()=>{
-  test('200: should respond with correct topic array and correct length when given a topic query',()=>{
+describe('FEATURE: GET /api/articles (queries)', () => {
+  test('200: should respond with correct topic array and correct length when given a topic query', () => {
     return request(app)
-    .get('/api/articles?filter_by=cats')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(Array.isArray(articles)).toBe(true)
-      expect(articles).toHaveLength(1)
-    })
-  })
-  test('200: when passed a sort_by query should return array sorted by that query value in descending order',()=>{
-    return request(app)
-    .get('/api/articles?sort_by=author')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles).toBeSortedBy('author', {descending: true})
-    })
-  })
-  test('200: when not passed a sort_by query should default to sorting by date in descending order',()=>{
-    return request(app)
-    .get('/api/articles')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles).toBeSortedBy('created_at', {descending: true})
-    })
-  })
-  test('200: returns with array sorted in ascending order when passed the query of "asc"',()=>{
-    return request(app)
-    .get('/api/articles?order=asc')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles).toBeSortedBy('created_at', {descending: false})
-    })
-  })
-  test('200: if passed a filter, sort by and ascending query returns an array filtered and sorted by that query in ascending order',()=>{
-    return request(app)
-    .get('/api/articles?filter_by=mitch&sort_by=title&order=asc')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles).toHaveLength(4)
-      expect(articles).toBeSortedBy('title', {descending: false})
-    })
-  })
-  test('404: responds with error if passed value for filter that does not exist',()=>{
-    return request(app)
-    .get('/api/articles?filter_by=droptable')
-    .expect(404)
-    .then(({body})=>{
-      
-      expect(body.msg).toBe('Not found')
-    })
-  })
-  test('400: responds with error if passed value for sort_by not on greenlist',()=>{
-    return request(app)
-    .get('/api/articles?sort_by=droptable')
-    .expect(400)
-    .then(({body})=>{
-      
-      expect(body.msg).toBe('Bad request')
-    })
-  })
-  test('400: responds with error if passed value for order not on greenlist',()=>{
-    return request(app)
-    .get('/api/articles?order=droptable')
-    .expect(400)
-    .then(({body})=>{
-      
-      expect(body.msg).toBe('Bad request')
-    })
-  })
-  
-})
+      .get('/api/articles?filter_by=cats')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(Array.isArray(articles)).toBe(true);
+        expect(articles).toHaveLength(1);
+      });
+  });
 
-describe('FEATURE: GET /api/articles/:article_id (comment_count', ()=>{
-  test('200: returning article object should have a property of comment_count', ()=>{
+  test('200: when passed a sort_by query should return array sorted by that query value in descending order', () => {
     return request(app)
-    .get('/api/articles/1')
-    .expect(200)
-    .then(({body})=>{
-      const article = body.article
-      expect(article).toHaveProperty('comment_count', expect.any(String))
-    })
-  })
-  test('200: returning article object should have correct value for comment_count', ()=>{
+      .get('/api/articles?sort_by=author')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy('author', { descending: true });
+      });
+  });
+  test('200: when passed a sort_by query of comment_count should return array sorted by that query value in descending order', () => {
     return request(app)
-    .get('/api/articles/1')
-    .expect(200)
-    .then(({body})=>{
-      const article = body.article
-      expect(article.comment_count).toBe('11')
-    })
-  })
-})
+      .get('/api/articles?sort_by=comment_count&order=desc')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles[0].comment_count).toBe('11');
+      });
+  });
+  test('200: when not passed a sort_by query should default to sorting by date in descending order', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy('created_at', { descending: true });
+      });
+  });
+  test('200: returns with array sorted in ascending order when passed the query of "asc"', () => {
+    return request(app)
+      .get('/api/articles?order=asc')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy('created_at', { descending: false });
+      });
+  });
+  test('200: if passed a filter, sort by and ascending query returns an array filtered and sorted by that query in ascending order', () => {
+    return request(app)
+      .get('/api/articles?filter_by=mitch&sort_by=title&order=asc')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toHaveLength(4);
+        expect(articles).toBeSortedBy('title', { descending: false });
+      });
+  });
+  test('404: responds with error if passed value for filter that does not exist', () => {
+    return request(app)
+      .get('/api/articles?filter_by=droptable')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+  test('400: responds with error if passed value for sort_by not on greenlist', () => {
+    return request(app)
+      .get('/api/articles?sort_by=droptable')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+  test('400: responds with error if passed value for order not on greenlist', () => {
+    return request(app)
+      .get('/api/articles?order=droptable')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
 
-describe('ADVANCED: GET /api/users/:username', ()=>{
-  test('200: responds with a user object', ()=>{
+describe('FEATURE: GET /api/articles/:article_id (comment_count', () => {
+  test('200: returning article object should have a property of comment_count', () => {
     return request(app)
-    .get('/api/users/lurker')
-    .expect(200)
-    .then(({body})=>{
-      const { user } = body
-      expect(typeof user).toBe('object')
-    })
-  })
-  test('200: responds with a user object with the correct properties', ()=>{
+      .get('/api/articles/1')
+      .expect(200)
+      .then(({ body }) => {
+        const article = body.article;
+        expect(article).toHaveProperty('comment_count', expect.any(String));
+      });
+  });
+  test('200: returning article object should have correct value for comment_count', () => {
+    return request(app)
+      .get('/api/articles/1')
+      .expect(200)
+      .then(({ body }) => {
+        const article = body.article;
+        expect(article.comment_count).toBe('11');
+      });
+  });
+});
+
+describe('ADVANCED: GET /api/users/:username', () => {
+  test('200: responds with a user object', () => {
+    return request(app)
+      .get('/api/users/lurker')
+      .expect(200)
+      .then(({ body }) => {
+        const { user } = body;
+        expect(typeof user).toBe('object');
+      });
+  });
+  test('200: responds with a user object with the correct properties', () => {
     const exampleObject = {
       username: 'lurker',
       name: 'do_nothing',
-      avatar_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png'
-    }
+      avatar_url:
+        'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+    };
     return request(app)
-    .get('/api/users/lurker')
-    .expect(200)
-    .then(({body})=>{
-      const { user } = body
-      expect(user).toMatchObject(exampleObject)
-    })
-  })
-  test('404: responds with error if username is valid type but doesn_t exist', ()=>{
+      .get('/api/users/lurker')
+      .expect(200)
+      .then(({ body }) => {
+        const { user } = body;
+        expect(user).toMatchObject(exampleObject);
+      });
+  });
+  test('404: responds with error if username is valid type but doesn_t exist', () => {
     return request(app)
-    .get('/api/users/henrycavill')
-    .expect(404)
-    .then(({body})=>{
-      expect(body.msg).toBe('Not found');
-    })
-  })
-})
+      .get('/api/users/henrycavill')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found');
+      });
+  });
+});
 
-
-describe('ADVANCED: PATCH /api/comments/:comment_id', ()=>{
-  test('201: should respond with updated comment object with votes increased by 1', ()=>{
-    const newVote = 1
+describe('ADVANCED: PATCH /api/comments/:comment_id', () => {
+  test('201: should respond with updated comment object with votes increased by 1', () => {
+    const newVote = 1;
     const inputVotes = {
-      inc_votes: newVote
-    }
+      inc_votes: newVote,
+    };
     return request(app)
-    .patch('/api/comments/1')
-    .send(inputVotes)
-    .expect(201)
-    .then(({body})=>{
-      const { updatedComment } = body
-      expect(updatedComment.votes).toBe(17)
-    })
-  })
-  test('201: should respond with updated comment object with votes decreased by 1', ()=>{
-    const newVote = -1
+      .patch('/api/comments/1')
+      .send(inputVotes)
+      .expect(201)
+      .then(({ body }) => {
+        const { updatedComment } = body;
+        expect(updatedComment.votes).toBe(17);
+      });
+  });
+  test('201: should respond with updated comment object with votes decreased by 1', () => {
+    const newVote = -1;
     const inputVotes = {
-      inc_votes: newVote
-    }
+      inc_votes: newVote,
+    };
     return request(app)
-    .patch('/api/comments/1')
-    .send(inputVotes)
-    .expect(201)
-    .then(({body})=>{
-      const { updatedComment } = body
-      expect(updatedComment.votes).toBe(15)
-    })
-  })
+      .patch('/api/comments/1')
+      .send(inputVotes)
+      .expect(201)
+      .then(({ body }) => {
+        const { updatedComment } = body;
+        expect(updatedComment.votes).toBe(15);
+      });
+  });
   test('404: responds with error when given a comment_id that is valid but non-existent', () => {
-    const newVote = 1
+    const newVote = 1;
     const inputVotes = {
-      inc_votes: newVote
-    }
+      inc_votes: newVote,
+    };
     return request(app)
       .patch('/api/comments/999')
       .send(inputVotes)
@@ -632,10 +641,10 @@ describe('ADVANCED: PATCH /api/comments/:comment_id', ()=>{
   });
 
   test('400: responds with error when given a comment_id that is invalid type', () => {
-    const newVote = 1
+    const newVote = 1;
     const inputVotes = {
-      inc_votes: newVote
-    }
+      inc_votes: newVote,
+    };
     return request(app)
       .patch('/api/comments/simonlebon')
       .send(inputVotes)
@@ -645,7 +654,7 @@ describe('ADVANCED: PATCH /api/comments/:comment_id', ()=>{
       });
   });
   test('400: responds with error when given an empty object', () => {
-    const inputVotes = {}
+    const inputVotes = {};
 
     return request(app)
       .patch('/api/comments/1')
@@ -655,116 +664,113 @@ describe('ADVANCED: PATCH /api/comments/:comment_id', ()=>{
         expect(body.msg).toBe('Bad request');
       });
   });
-})
+});
 
-describe('ADVANCED: POST /api/articles', ()=>{
-  test('201: should return the newly added article as an object with the correct properties', ()=>{
-   const inputArticle = {
-    author: 'lurker',
-    title:  'The life and times of Sir Devon Potato',
-    body: "once upon a time the end",
-    topic: "mitch",
-    article_img_url:"http://"
-   }
-   const exampleObject = {
-    author: 'lurker',
-    title:  'The life and times of Sir Devon Potato',
-    body: "once upon a time the end",
-    topic: "mitch",
-    article_img_url:"http://",
-    article_id: expect.any(Number),
-    votes:expect.any(Number),
-    created_at: expect.any(String),
-    comment_count: expect.any(Number)
-   }
-    return request(app)
-    .post('/api/articles')
-    .send(inputArticle)
-    .expect(201)
-    .then(({body})=>{
-      const { newArticle } = body;
-      expect(newArticle).toMatchObject(exampleObject)
-      
-    })
-  })
-  test('201: when passed an object with missing article_img_url will add a default', ()=>{
+describe('ADVANCED: POST /api/articles', () => {
+  test('201: should return the newly added article as an object with the correct properties', () => {
     const inputArticle = {
-     author: 'lurker',
-     title:  'The life and times of Sir Devon Potato',
-     body: "once upon a time the end",
-     topic: "mitch"
-    }
+      author: 'lurker',
+      title: 'The life and times of Sir Devon Potato',
+      body: 'once upon a time the end',
+      topic: 'mitch',
+      article_img_url: 'http://',
+    };
     const exampleObject = {
-     author: 'lurker',
-     title:  'The life and times of Sir Devon Potato',
-     body: "once upon a time the end",
-     topic: "mitch",
-     article_img_url:expect.any(String),
-     article_id: expect.any(Number),
-     votes:expect.any(Number),
-     created_at: expect.any(String),
-     comment_count: expect.any(Number)
-    }
-     return request(app)
-     .post('/api/articles')
-     .send(inputArticle)
-     .expect(201)
-     .then(({body})=>{
-       const { newArticle } = body;
-       expect(newArticle).toMatchObject(exampleObject)
-       
-     })
-   })
-  test('400: should return error if properties are not in the object body', ()=>{
+      author: 'lurker',
+      title: 'The life and times of Sir Devon Potato',
+      body: 'once upon a time the end',
+      topic: 'mitch',
+      article_img_url: 'http://',
+      article_id: expect.any(Number),
+      votes: expect.any(Number),
+      created_at: expect.any(String),
+      comment_count: expect.any(Number),
+    };
+    return request(app)
+      .post('/api/articles')
+      .send(inputArticle)
+      .expect(201)
+      .then(({ body }) => {
+        const { newArticle } = body;
+        expect(newArticle).toMatchObject(exampleObject);
+      });
+  });
+  test('201: when passed an object with missing article_img_url will add a default', () => {
     const inputArticle = {
-     author: 'lurker',
-     title:  'The life and times of Sir Devon Potato',
-    }
-     return request(app)
-     .post('/api/articles')
-     .send(inputArticle)
-     .expect(400)
-     .then(({body})=>{
-       expect(body.msg).toBe('Bad request')
-     })
-   })
-})
+      author: 'lurker',
+      title: 'The life and times of Sir Devon Potato',
+      body: 'once upon a time the end',
+      topic: 'mitch',
+    };
+    const exampleObject = {
+      author: 'lurker',
+      title: 'The life and times of Sir Devon Potato',
+      body: 'once upon a time the end',
+      topic: 'mitch',
+      article_img_url: expect.any(String),
+      article_id: expect.any(Number),
+      votes: expect.any(Number),
+      created_at: expect.any(String),
+      comment_count: expect.any(Number),
+    };
+    return request(app)
+      .post('/api/articles')
+      .send(inputArticle)
+      .expect(201)
+      .then(({ body }) => {
+        const { newArticle } = body;
+        expect(newArticle).toMatchObject(exampleObject);
+      });
+  });
+  test('400: should return error if properties are not in the object body', () => {
+    const inputArticle = {
+      author: 'lurker',
+      title: 'The life and times of Sir Devon Potato',
+    };
+    return request(app)
+      .post('/api/articles')
+      .send(inputArticle)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
 
-
-describe('ADVANCED: GET /api/articles (pagination)',()=>{
-  test('200: if passed the query of limit will limit the amount of articles in array to specified limit',()=>{
+describe('ADVANCED: GET /api/articles (pagination)', () => {
+  test('200: if passed the query of limit will limit the amount of articles in array to specified limit', () => {
     return request(app)
-    .get('/api/articles?limit_by=2')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles).toHaveLength(2);
-    })
-  })
-  test('200: if passed the query of limit and offset will return articles from that offset amount',()=>{
+      .get('/api/articles?limit_by=2')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toHaveLength(2);
+      });
+  });
+  test('200: if passed the query of limit and offset will return articles from that offset amount', () => {
     return request(app)
-    .get('/api/articles?sort_by=article_id&offset=1')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles).toHaveLength(4);
-    })
-  })
-  test('200: if passed a total_count query returns the total count',()=>{
+      .get('/api/articles?sort_by=article_id&offset=1')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toHaveLength(4);
+      });
+  });
+  test('200: if passed a total_count query returns the total count', () => {
     return request(app)
-    .get('/api/articles')
-    .expect(200)
-    .then(({body})=>{
-      const { articles } = body
-      expect(articles[0].hasOwnProperty('total_count')).toBe(true);
-    })
-  })
-  test('400: responds with an error if passed an invalid type for limit by query',()=>{
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles[0].hasOwnProperty('total_count')).toBe(true);
+      });
+  });
+  test('400: responds with an error if passed an invalid type for limit by query', () => {
     return request(app)
-    .get('/api/articles?limit_by=tomato')
-    .expect(400)
-    .then(({body})=>{
-      expect(body.msg).toBe('Bad request');
-    })
-  })
-})
+      .get('/api/articles?limit_by=tomato')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});

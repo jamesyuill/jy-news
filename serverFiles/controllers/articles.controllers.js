@@ -3,7 +3,7 @@ const {
   selectAllArticles,
   selectCommentsByArticleId,
   changeVotesByArticleId,
-  createArticle
+  createArticle,
 } = require('../models/articles.models');
 
 function getArticlesById(req, res, next) {
@@ -16,11 +16,11 @@ function getArticlesById(req, res, next) {
 }
 
 function getAllArticles(req, res, next) {
-  const filterBy = req.query.filter_by
-  const sortBy = req.query.sort_by || 'created_at'
-  const orderBy = req.query.order || 'desc'
-  const limitBy = req.query.limit_by || 10
-  const offset = req.query.offset || 0
+  const filterBy = req.query.filter_by;
+  const sortBy = req.query.sort_by || 'created_at';
+  const orderBy = req.query.order || 'desc';
+  const limitBy = req.query.limit_by || 10;
+  const offset = req.query.offset || 0;
 
   selectAllArticles(filterBy, sortBy, orderBy, limitBy, offset)
     .then((allArticles) => {
@@ -49,21 +49,20 @@ function updateVotesByArticleId(req, res, next) {
     .catch(next);
 }
 
-function postArticle(req,res,next){
-  const newArticleInput = req.body
+function postArticle(req, res, next) {
+  const newArticleInput = req.body;
 
-  
-
-
-
-  createArticle(newArticleInput).then((newArticle)=>{
-    res.status(201).send({newArticle})
-  }).catch(next)
+  createArticle(newArticleInput)
+    .then((newArticle) => {
+      res.status(201).send({ newArticle });
+    })
+    .catch(next);
 }
 
 module.exports = {
   getArticlesById,
   getAllArticles,
   getCommentsByArticleId,
-  updateVotesByArticleId, postArticle
+  updateVotesByArticleId,
+  postArticle,
 };
